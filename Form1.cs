@@ -7,108 +7,78 @@ namespace PlaneGame
 {
     public partial class Form1 : Form
     {
-        private bool isGas = false;
-        private bool isLightOn = true;
-        private SoundPlayer soundPlayer = new SoundPlayer();
-
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                soundPlayer.SoundLocation = Application.StartupPath + "\\sound.wav";
-            }
-            catch
-            {
-            }
-        }
+        SoundPlayer sp = new SoundPlayer("sound.wav");
+        bool Gas = false;
+        bool light = true;
 
         private void btnGas_Click(object sender, EventArgs e)
         {
-            isGas = true;
+            sp.Play();
+            Gas = true;
             timer1.Start();
-            try
-            {
-                soundPlayer.PlayLooping();
-            }
-            catch
-            {
-                SystemSounds.Beep.Play();
-            }
         }
 
         private void btnBreak_Click(object sender, EventArgs e)
         {
-            isGas = false;
+            sp.Stop();
+            Gas = false;
             timer1.Stop();
-            try
-            {
-                soundPlayer.Stop();
-            }
-            catch
-            {
-            }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (isGas && pbPlane.Top > 10)
+            if (Gas == true && pbPlane.Location.Y > 0)
             {
-                pbPlane.Top -= 3;
-                pbLight.Top -= 3;
+                pbPlane.Location = new Point(pbPlane.Location.X, pbPlane.Location.Y - 2);
+                pbLight.Location = new Point(pbLight.Location.X, pbLight.Location.Y - 2);
             }
             else
             {
                 timer1.Stop();
-                isGas = false;
-                try
-                {
-                    soundPlayer.Stop();
-                }
-                catch
-                {
-                }
+                sp.Stop();
+                MessageBox.Show("Way end");
             }
         }
 
         private void btnOnOff_Click(object sender, EventArgs e)
         {
-            if (isLightOn)
+            if (light == false)
             {
-                isLightOn = false;
-                pbLight.Visible = false;
-                btnOnOff.Text = "OFF";
+                light = true;
+                btnOnOff.Text = "ON";
+                pbLight.Visible = true;
             }
             else
             {
-                isLightOn = true;
-                pbLight.Visible = true;
-                btnOnOff.Text = "ON";
+                light = false;
+                btnOnOff.Text = "OFF";
+                pbLight.Visible = false;
             }
         }
 
         private void btnEnis_Click(object sender, EventArgs e)
         {
-            SystemSounds.Exclamation.Play();
+            SystemSounds.Beep.Play();
         }
 
         private void btnTurbulans_Click(object sender, EventArgs e)
         {
-            SystemSounds.Hand.Play();
+            SystemSounds.Beep.Play();
         }
 
         private void btnKemerler_Click(object sender, EventArgs e)
         {
-            SystemSounds.Asterisk.Play();
+            SystemSounds.Beep.Play();
         }
 
         private void btnTesekkurler_Click(object sender, EventArgs e)
         {
-            SystemSounds.Question.Play();
+            SystemSounds.Beep.Play();
         }
 
         private void btnBeep_Click(object sender, EventArgs e)
